@@ -54,4 +54,11 @@ public class QueryProcessorTest {
             is("70"));
   }
 
+  @Test
+  public void knowsIfANumberIsPrime() throws Exception {
+    assertThat(queryProcessor.process(
+                    "Which of the following numbers are primes: 80, 79, 75, 32, 71?"),
+            is("79,71"));
+  }
+
 }

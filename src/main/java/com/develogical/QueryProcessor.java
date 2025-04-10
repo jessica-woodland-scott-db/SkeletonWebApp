@@ -1,12 +1,16 @@
 package com.develogical;
+import org.apache.commons.math3.primes.Primes;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class QueryProcessor {
 
   public static final String ADDITION_PATTERN = "What is (\\d+) plus (\\d+)\\?";
   public static final String MULTIPLIED_PATTERN = "What is (\\d+) multiplied by (\\d+)\\?";
+  public static final String CUBE = "cube";
 
   public String process(String query) {
 
@@ -33,8 +37,7 @@ public class QueryProcessor {
     }
 
     if (query.startsWith("Which of the following numbers is the largest:")) {
-      final String numbersListStr = query.substring(0, query.length() - 1).split(": ")[1];
-      final String[] numberStr = numbersListStr.split(",\\s");
+      final String[] numberStr = getNumberStringAfter(query);
       return String.valueOf(Stream.of(numberStr)
               .map(Integer::valueOf)
               .mapToInt(i -> i)
@@ -43,31 +46,18 @@ public class QueryProcessor {
     }
 
     if (query.matches(ADDITION_PATTERN)) {
-      final Pattern pattern = Pattern.compile(ADDITION_PATTERN);
-      final Matcher matcher = pattern.matcher(query);
-      matcher.find();
-      final Integer firstNum = Integer.valueOf(matcher.group(1));
-      final Integer secondNum = Integer.valueOf(matcher.group(2));
-
-      return String.valueOf(firstNum + secondNum);
-
+      Result result = getResult(query,ADDITION_PATTERN);
+      return String.valueOf(result.firstNum + result.secondNum);
     }
 
     if (query.matches(MULTIPLIED_PATTERN)) {
-      final Pattern pattern = Pattern.compile(MULTIPLIED_PATTERN);
-      final Matcher matcher = pattern.matcher(query);
-      matcher.find();
-      final Integer firstNum = Integer.valueOf(matcher.group(1));
-      final Integer secondNum = Integer.valueOf(matcher.group(2));
-
-      return String.valueOf(firstNum * secondNum);
+      Result result = getResult(query,MULTIPLIED_PATTERN);
+      return String.valueOf(result.firstNum * result.secondNum);
 
     }
 
-
-    if (query.contains("cube")) {
-      final String numbersListStr = query.substring(0, query.length() - 1).split(": ")[1];
-      final String[] numberStr = numbersListStr.split(",\\s");
+    if (query.contains(CUBE)) {
+      final String[] numberStr = getNumberStringAfter(query);
       return String.valueOf(Stream.of(numberStr)
               .map(Integer::valueOf)
               .mapToInt(i -> i)
@@ -77,6 +67,42 @@ public class QueryProcessor {
               .orElse(0));
 
     }
+
+    if (query.contains("prime")) {
+      final String[] numberStr = getNumberStringAfter(query);
+      return Stream.of(numberStr)
+              .map(Integer::valueOf)
+              .mapToInt(i -> i)
+              .filter(Primes::isPrime)
+              .mapToObj(i -> String.valueOf(i))
+              .collect(Collectors.joining(","));
+    }
     return "";
+  }
+
+  private static Result getResult(String query, String queryPattern) {
+    final Pattern pattern = Pattern.compile(queryPattern);
+    final Matcher matcher = pattern.matcher(query);
+    matcher.find();
+    final Integer firstNum = Integer.valueOf(matcher.group(1));
+    final Integer secondNum = Integer.valueOf(matcher.group(2));
+    Result result = new Result(firstNum, secondNum);
+    return result;
+  }
+
+  private static class Result {
+    public final Integer firstNum;
+    public final Integer secondNum;
+
+    public Result(Integer firstNum, Integer secondNum) {
+      this.firstNum = firstNum;
+      this.secondNum = secondNum;
+    }
+  }
+
+  private static String[] getNumberStringAfter(String query) {
+    final String numbersListStr = query.substring(0, query.length() - 1).split(": ")[1];
+    final String[] numberStr = numbersListStr.split(",\\s");
+    return numberStr;
   }
 }
