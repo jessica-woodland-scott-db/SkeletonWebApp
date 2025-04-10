@@ -6,14 +6,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.develogical.web.Patterns.*;
+
 public class QueryProcessor {
-
-  public static final String ADDITION_PATTERN = "What is (\\d+) plus (\\d+)\\?";
-  public static final String MINUS_PATTERN = "What is (\\d+) minus (\\d+)\\?";
-
-  public static final String MULTIPLIED_PATTERN = "What is (\\d+) multiplied by (\\d+)\\?";
-  public static final String CUBE = "cube";
-
   public String process(String query) {
 
     System.out.println("Received query:" + query);
@@ -63,6 +58,12 @@ public class QueryProcessor {
 
     }
 
+    if (query.matches(DIVIDE_PATTERN)) {
+      Result result = getResult(query,DIVIDE_PATTERN);
+      return String.valueOf(result.firstNum / result.secondNum);
+
+    }
+
     if (query.contains(CUBE)) {
       final String[] numberStr = getNumberStringAfter(query);
       return Stream.of(numberStr)
@@ -74,6 +75,14 @@ public class QueryProcessor {
               .collect(Collectors.joining(","));
 
     }
+
+    if (query.matches(POWER_PATTERN)) {
+      Result result = getResult(query,POWER_PATTERN);
+      return String.valueOf((int) Math.pow(result.firstNum, result.secondNum));
+
+    }
+
+
 
     if (query.contains("prime")) {
       final String[] numberStr = getNumberStringAfter(query);

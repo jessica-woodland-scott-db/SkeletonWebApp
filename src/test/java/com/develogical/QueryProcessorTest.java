@@ -68,4 +68,11 @@ public class QueryProcessorTest {
             is("39"));
   }
 
+  @Test
+  public void toThePower() throws Exception {
+    assertThat(queryProcessor.process(
+                    "What is 4 to the power of 2?"),
+            is("16"));
+  }
+
 }
