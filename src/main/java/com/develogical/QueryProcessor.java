@@ -1,9 +1,12 @@
 package com.develogical;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class QueryProcessor {
+
+  public static final String ADDITION_PATTERN = "What is (\\d+) plus (\\d+)\\?";
 
   public String process(String query) {
 
@@ -15,8 +18,8 @@ public class QueryProcessor {
 
     if (query.toLowerCase().contains("shakespeare")) {
       return "William Shakespeare (26 April 1564 - 23 April 1616) was an "
-          + "English poet, playwright, and actor, widely regarded as the greatest "
-          + "writer in the English language and the world's pre-eminent dramatist.";
+              + "English poet, playwright, and actor, widely regarded as the greatest "
+              + "writer in the English language and the world's pre-eminent dramatist.";
     }
 
     if (query.toLowerCase().contains("henry")) {
@@ -39,6 +42,16 @@ public class QueryProcessor {
               .orElse(0));
     }
 
+    if (query.matches(ADDITION_PATTERN)) {
+      final Pattern pattern = Pattern.compile(ADDITION_PATTERN);
+      final Matcher matcher = pattern.matcher(query);
+      matcher.find();
+      final Integer firstNum = Integer.valueOf(matcher.group(1));
+      final Integer secondNum = Integer.valueOf(matcher.group(2));
+
+      return String.valueOf(firstNum + secondNum);
+
+    }
     return "";
   }
 }

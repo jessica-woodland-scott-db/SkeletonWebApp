@@ -32,4 +32,11 @@ public class QueryProcessorTest {
             is("64"));
   }
 
+  @Test
+  public void knowsHowToAddNumbers() throws Exception {
+    assertThat(queryProcessor.process(
+            "What is 47 plus 62?"),
+            is("109"));
+  }
+
 }
