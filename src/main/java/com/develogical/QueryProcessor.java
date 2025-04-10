@@ -2,6 +2,7 @@ package com.develogical;
 import org.apache.commons.math3.primes.Primes;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -89,8 +90,8 @@ public class QueryProcessor {
 
     if (query.matches(POWER_PATTERN)) {
       Result result = getResult(query,POWER_PATTERN);
-      final double pow = Math.pow(result.firstNum, result.secondNum);
-      return String.valueOf(BigDecimal.valueOf(pow).toBigInteger());
+      final BigInteger pow = (new BigInteger(result.firstNum + "")).pow(result.secondNum);
+      return String.valueOf(pow);
     }
 
     if (query.contains("prime")) {
