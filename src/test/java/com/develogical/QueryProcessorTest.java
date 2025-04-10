@@ -39,6 +39,13 @@ public class QueryProcessorTest {
             is("109"));
   }
 
+  @Test
+  public void knowsHowToFindCubeAndSquare() throws Exception {
+    assertThat(queryProcessor.process(
+                    "Which of the following numbers is both a square and a cube: 3476, 961, 2468, 64, 1535, 125, 2280?\t"),
+            is("64"));
+  }
+
 
   @Test
   public void knowsHowToTimesNumbers() throws Exception {
