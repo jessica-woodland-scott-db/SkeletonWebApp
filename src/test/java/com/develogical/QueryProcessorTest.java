@@ -42,7 +42,7 @@ public class QueryProcessorTest {
   @Test
   public void knowsHowToFindCubeAndSquare() throws Exception {
     assertThat(queryProcessor.process(
-                    "Which of the following numbers is both a square and a cube: 3476, 961, 2468, 64, 1535, 125, 2280?\t"),
+                    "Which of the following numbers is both a square and a cube: 3476, 961, 2468, 64, 1535, 125, 2280?"),
             is("64"));
   }
 
@@ -59,6 +59,13 @@ public class QueryProcessorTest {
     assertThat(queryProcessor.process(
                     "Which of the following numbers are primes: 80, 79, 75, 32, 71?"),
             is("79,71"));
+  }
+
+  @Test
+  public void knowsHowToMinusNumbers() throws Exception {
+    assertThat(queryProcessor.process(
+                    "What is 48 minus 9?"),
+            is("39"));
   }
 
 }

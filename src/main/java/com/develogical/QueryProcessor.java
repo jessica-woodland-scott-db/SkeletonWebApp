@@ -9,6 +9,8 @@ import java.util.stream.Stream;
 public class QueryProcessor {
 
   public static final String ADDITION_PATTERN = "What is (\\d+) plus (\\d+)\\?";
+  public static final String MINUS_PATTERN = "What is (\\d+) minus (\\d+)\\?";
+
   public static final String MULTIPLIED_PATTERN = "What is (\\d+) multiplied by (\\d+)\\?";
   public static final String CUBE = "cube";
 
@@ -50,6 +52,11 @@ public class QueryProcessor {
       return String.valueOf(result.firstNum + result.secondNum);
     }
 
+    if (query.matches(MINUS_PATTERN)) {
+      Result result = getResult(query,MINUS_PATTERN);
+      return String.valueOf(result.firstNum - result.secondNum);
+    }
+
     if (query.matches(MULTIPLIED_PATTERN)) {
       Result result = getResult(query,MULTIPLIED_PATTERN);
       return String.valueOf(result.firstNum * result.secondNum);
@@ -58,13 +65,13 @@ public class QueryProcessor {
 
     if (query.contains(CUBE)) {
       final String[] numberStr = getNumberStringAfter(query);
-      return String.valueOf(Stream.of(numberStr)
+      return Stream.of(numberStr)
               .map(Integer::valueOf)
               .mapToInt(i -> i)
               .filter(i -> Math.cbrt(i) % 1 == 0)
               .filter(i -> Math.sqrt(i) % 1 == 0)
-              .findAny()
-              .orElse(0));
+              .mapToObj(i -> String.valueOf(i))
+              .collect(Collectors.joining(","));
 
     }
 
