@@ -1,5 +1,5 @@
 # Change the following line to match your own app name.
-app = "your-app-name-here"
+app = "search-app-db-woo"
 
 kill_signal = "SIGINT"
 kill_timeout = 5
