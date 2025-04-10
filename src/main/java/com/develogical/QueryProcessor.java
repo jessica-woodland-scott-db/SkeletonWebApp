@@ -1,5 +1,8 @@
 package com.develogical;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class QueryProcessor {
 
   public String process(String query) {
@@ -24,6 +27,16 @@ public class QueryProcessor {
               "separating the Church of England from papal authority. He appointed himself Supreme Head " +
               "of the Church of England and dissolved convents and monasteries, for which he was" +
               " excommunicated by the pope.";
+    }
+
+    if (query.startsWith("Which of the following numbers is the largest:")) {
+      final String numbersListStr = query.substring(0, query.length() - 1).split(": ")[1];
+      final String[] numberStr = numbersListStr.split(",\\s");
+      return String.valueOf(Stream.of(numberStr)
+              .map(Integer::valueOf)
+              .mapToInt(i -> i)
+              .max()
+              .orElse(0));
     }
 
     return "";
