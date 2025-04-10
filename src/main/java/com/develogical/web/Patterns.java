@@ -3,6 +3,7 @@ package com.develogical.web;
 public class Patterns {
 
     public static final String ADDITION_PATTERN = "What is (\\d+) plus (\\d+)\\?";
+    public static final String MULTI_ADDITION_PATTERN = "What is (\\d+) plus (\\d+) plus (\\d+)\\?";
 
     public static final String POWER_PATTERN = "What is (\\d+) to the power of (\\d+)\\?";
 

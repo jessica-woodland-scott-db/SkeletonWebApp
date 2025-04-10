@@ -47,6 +47,16 @@ public class QueryProcessor {
       return String.valueOf(result.firstNum + result.secondNum);
     }
 
+    if (query.matches(MULTI_ADDITION_PATTERN)) {
+      final Pattern pattern = Pattern.compile(MULTI_ADDITION_PATTERN);
+      final Matcher matcher = pattern.matcher(query);
+      matcher.find();
+      final Integer firstNum = Integer.valueOf(matcher.group(1));
+      final Integer secondNum = Integer.valueOf(matcher.group(2));
+      final Integer thirdNum = Integer.valueOf(matcher.group(3));
+      return String.valueOf(firstNum + secondNum + thirdNum);
+    }
+
     if (query.matches(MINUS_PATTERN)) {
       Result result = getResult(query,MINUS_PATTERN);
       return String.valueOf(result.firstNum - result.secondNum);
