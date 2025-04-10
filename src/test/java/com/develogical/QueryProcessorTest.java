@@ -39,4 +39,12 @@ public class QueryProcessorTest {
             is("109"));
   }
 
+
+  @Test
+  public void knowsHowToTimesNumbers() throws Exception {
+    assertThat(queryProcessor.process(
+                    "What is 2 multiplied by 35?"),
+            is("70"));
+  }
+
 }

@@ -1,13 +1,15 @@
 package com.develogical;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class QueryProcessor {
 
   public static final String ADDITION_PATTERN = "What is (\\d+) plus (\\d+)\\?";
+  public static final String MULTIPLIED_PATTERN = "What is (\\d+) multiplied by (\\d+)\\?";
 
+  public static final String CUBE_PATTERN = "Which of the following numbers is both a square and a cube: (\\d+) multiplied by (\\d+)\\?";
+  
   public String process(String query) {
 
     System.out.println("Received query:" + query);
@@ -50,6 +52,29 @@ public class QueryProcessor {
       final Integer secondNum = Integer.valueOf(matcher.group(2));
 
       return String.valueOf(firstNum + secondNum);
+
+    }
+
+    if (query.matches(MULTIPLIED_PATTERN)) {
+      final Pattern pattern = Pattern.compile(MULTIPLIED_PATTERN);
+      final Matcher matcher = pattern.matcher(query);
+      matcher.find();
+      final Integer firstNum = Integer.valueOf(matcher.group(1));
+      final Integer secondNum = Integer.valueOf(matcher.group(2));
+
+      return String.valueOf(firstNum * secondNum);
+
+    }
+
+
+    if (query.matches(MULTIPLIED_PATTERN)) {
+      final Pattern pattern = Pattern.compile(MULTIPLIED_PATTERN);
+      final Matcher matcher = pattern.matcher(query);
+      matcher.find();
+      final Integer firstNum = Integer.valueOf(matcher.group(1));
+      final Integer secondNum = Integer.valueOf(matcher.group(2));
+
+      return String.valueOf(firstNum * secondNum);
 
     }
     return "";
